@@ -16,3 +16,19 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+
+# Next.js
+/.next/
+/out/
+/build/
+
+# Dependencies
+/node_modules/
+
+# Local environment files
+.env*
+!.env.example
+
+# TypeScript
+next-env.d.ts
+*.tsbuildinfo
