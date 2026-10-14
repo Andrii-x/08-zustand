@@ -1,0 +1,22 @@
+.label {
+  display: block;
+  min-width: min(260px, 100%);
+}
+
+.input {
+  width: 100%;
+  border: 1px solid #dce1e8;
+  border-radius: 8px;
+  padding: 11px 14px;
+  background: white;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}

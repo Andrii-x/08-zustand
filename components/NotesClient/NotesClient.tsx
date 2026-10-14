@@ -4,7 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';
 import { fetchNotes } from '@/lib/api/notes';
-import NoteCard from '@/components/NoteCard/NoteCard';
+import NoteList from '@/components/NoteList/NoteList';
+import Pagination from '@/components/Pagination/Pagination';
+import SearchBox from '@/components/SearchBox/SearchBox';
 import css from './NotesClient.module.css';
 
 interface NotesClientProps {
@@ -13,13 +15,14 @@ interface NotesClientProps {
 
 export default function NotesClient({ initialTag }: NotesClientProps) {
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
   const selectedTag = initialTag ?? 'All';
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['notes', { tag: selectedTag, search }],
+    queryKey: ['notes', { tag: selectedTag, search, page }],
     queryFn: () =>
       fetchNotes({
-        page: 1,
-        perPage: 100,
+        page,
+        perPage: 12,
         ...(selectedTag === 'All' ? {} : { tag: selectedTag }),
         ...(search ? { search } : {}),
       }),
@@ -41,16 +44,13 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
       </header>
 
       <div className={css.controls}>
-        <label className={css.searchLabel}>
-          <span className={css.srOnly}>Search notes</span>
-          <input
-            className={css.search}
-            type="search"
-            placeholder="Search notes..."
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-        </label>
+        <SearchBox
+          value={search}
+          onChange={(value) => {
+            setSearch(value);
+            setPage(1);
+          }}
+        />
       </div>
 
       {isPending && <p className={css.message}>Loading notes...</p>}
@@ -62,14 +62,13 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
       {!isPending && !isError && data?.notes.length === 0 && (
         <p className={css.message}>No notes found. Create your first note.</p>
       )}
-      {data && data.notes.length > 0 && (
-        <ul className={css.grid}>
-          {data.notes.map((note) => (
-            <li key={note.id}>
-              <NoteCard note={note} />
-            </li>
-          ))}
-        </ul>
+      {data && data.notes.length > 0 && <NoteList notes={data.notes} />}
+      {data && (
+        <Pagination
+          page={data.page}
+          totalPages={data.totalPages}
+          onPageChange={setPage}
+        />
       )}
     </section>
   );

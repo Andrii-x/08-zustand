@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import type { ReactNode } from 'react';
-import QueryProvider from '@/components/QueryProvider/QueryProvider';
+import Footer from '@/components/Footer/Footer';
+import Header from '@/components/Header/Header';
+import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import { createOpenGraph } from '@/lib/utils/metadata';
 import './globals.css';
 
@@ -31,10 +33,12 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
   return (
     <html lang="en">
       <body className={roboto.variable}>
-        <QueryProvider>
+        <TanStackProvider>
+          <Header />
           {children}
           {modal}
-        </QueryProvider>
+          <Footer />
+        </TanStackProvider>
       </body>
     </html>
   );

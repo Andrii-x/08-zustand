@@ -1,6 +1,6 @@
 import axios from 'axios';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Modal from '@/components/Modal/Modal';
 import { fetchNoteById } from '@/lib/api/notes';
 import css from './page.module.css';
 
@@ -23,20 +23,15 @@ export default async function ModalNotePage({ params }: ModalNotePageProps) {
   }
 
   return (
-    <div className={css.backdrop}>
-      <article className={css.dialog} role="dialog" aria-modal="true">
-        <Link className={css.close} href="/notes/filter/all" aria-label="Close note">
-          ×
-        </Link>
-        <div className={css.meta}>
-          <span className={css.tag}>{note.tag}</span>
-          <time dateTime={note.createdAt}>
-            {new Date(note.createdAt).toLocaleDateString()}
-          </time>
-        </div>
-        <h1 className={css.title}>{note.title}</h1>
-        <p className={css.content}>{note.content}</p>
-      </article>
-    </div>
+    <Modal closeHref="/notes/filter/all" label={note.title}>
+      <div className={css.meta}>
+        <span className={css.tag}>{note.tag}</span>
+        <time dateTime={note.createdAt}>
+          {new Date(note.createdAt).toLocaleDateString()}
+        </time>
+      </div>
+      <h1 className={css.title}>{note.title}</h1>
+      <p className={css.content}>{note.content}</p>
+    </Modal>
   );
 }
