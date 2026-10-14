@@ -64,19 +64,19 @@ export default function Notes({ tag }: NotesProps) {
 
       <div className={css.controls}>
         <nav className={css.filters} aria-label="Filter notes by tag">
-          {tags.map((tag) => {
-            const value = tag === 'All' ? 'all' : tag;
+          {tags.map((filterTag) => {
+            const value = filterTag === 'All' ? 'all' : filterTag;
             const href = `/notes/filter/${encodeURIComponent(value)}`;
-            const isSelected = tag === value;
+            const isSelected = tag === filterTag;
 
             return (
               <Link
-                key={tag}
+                key={filterTag}
                 className={`${css.filter} ${isSelected ? css.activeFilter : ''}`}
                 href={href}
                 aria-current={isSelected ? 'page' : undefined}
               >
-                {tag}
+                {filterTag}
               </Link>
             );
           })}
