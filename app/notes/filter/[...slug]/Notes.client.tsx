@@ -20,11 +20,10 @@ const tags: Array<NoteTag | 'All'> = [
 ];
 
 interface NotesProps {
-  initialTag?: string;
+  tag: NoteTag | 'All';
 }
 
-export default function Notes({ initialTag }: NotesProps) {
-  const selectedTag = initialTag ?? 'All';
+export default function Notes({ tag }: NotesProps) {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [page, setPage] = useState(1);
@@ -38,12 +37,12 @@ export default function Notes({ initialTag }: NotesProps) {
   }, [search]);
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['notes', { tag: selectedTag, search: debouncedSearch, page }],
+    queryKey: ['notes', { tag, search: debouncedSearch, page }],
     queryFn: () =>
       fetchNotes({
         page,
         perPage: 12,
-        ...(selectedTag === 'All' ? {} : { tag: selectedTag }),
+        ...(tag === 'All' ? {} : { tag }),
         ...(debouncedSearch ? { search: debouncedSearch } : {}),
       }),
   });
@@ -68,7 +67,7 @@ export default function Notes({ initialTag }: NotesProps) {
           {tags.map((tag) => {
             const value = tag === 'All' ? 'all' : tag;
             const href = `/notes/filter/${encodeURIComponent(value)}`;
-            const isSelected = selectedTag.toLowerCase() === value.toLowerCase();
+            const isSelected = tag === value;
 
             return (
               <Link

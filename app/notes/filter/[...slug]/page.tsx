@@ -1,7 +1,17 @@
 import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import { NOTEHUB_OG_IMAGE } from '@/lib/utils/metadata';
+import type { NoteTag } from '@/types/note';
 import Notes from './Notes.client';
 import css from './page.module.css';
+
+const noteTags: NoteTag[] = [
+  'Todo',
+  'Work',
+  'Personal',
+  'Meeting',
+  'Shopping',
+];
 
 interface FilterPageProps {
   params: Promise<{ slug: string[] }>;
@@ -45,12 +55,22 @@ export async function generateMetadata({
 
 export default async function FilterPage({ params }: FilterPageProps) {
   const { slug } = await params;
-  const filter = slug.join('/');
+  const requestedTag = slug.join('/');
+  const tag =
+    requestedTag.toLowerCase() === 'all'
+      ? 'All'
+      : noteTags.find(
+          (noteTag) => noteTag.toLowerCase() === requestedTag.toLowerCase(),
+        );
+
+  if (!tag) {
+    notFound();
+  }
 
   return (
     <main className={css.main}>
       <div className={css.container}>
-        <Notes initialTag={filter === 'all' ? undefined : filter} />
+        <Notes tag={tag} />
       </div>
     </main>
   );

@@ -7,23 +7,23 @@ import { fetchNotes } from '@/lib/api/notes';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
+import type { NoteTag } from '@/types/note';
 import css from './NotesClient.module.css';
 
 interface NotesClientProps {
-  initialTag?: string;
+  tag: NoteTag | 'All';
 }
 
-export default function NotesClient({ initialTag }: NotesClientProps) {
+export default function NotesClient({ tag }: NotesClientProps) {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
-  const selectedTag = initialTag ?? 'All';
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['notes', { tag: selectedTag, search, page }],
+    queryKey: ['notes', { tag, search, page }],
     queryFn: () =>
       fetchNotes({
         page,
         perPage: 12,
-        ...(selectedTag === 'All' ? {} : { tag: selectedTag }),
+        ...(tag === 'All' ? {} : { tag }),
         ...(search ? { search } : {}),
       }),
   });
