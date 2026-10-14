@@ -12,6 +12,13 @@
   background: white;
 }
 
+.previewArticle {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .back {
   color: #3157a4;
   font-weight: 700;

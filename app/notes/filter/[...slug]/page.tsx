@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import NotesClient from '@/components/NotesClient/NotesClient';
 import { createOpenGraph } from '@/lib/utils/metadata';
+import Notes from './Notes.client';
 import css from './page.module.css';
 
 interface FilterPageProps {
@@ -37,7 +37,7 @@ export default async function FilterPage({ params }: FilterPageProps) {
   return (
     <main className={css.main}>
       <div className={css.container}>
-        <NotesClient initialTag={filter === 'all' ? undefined : filter} />
+        <Notes initialTag={filter === 'all' ? undefined : filter} />
       </div>
     </main>
   );

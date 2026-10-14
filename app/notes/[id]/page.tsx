@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import axios from 'axios';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { fetchNoteById } from '@/lib/api/notes';
 import { createOpenGraph } from '@/lib/utils/metadata';
+import NoteDetails from './NoteDetails.client';
 import css from './page.module.css';
 
 interface NotePageProps {
@@ -59,24 +59,11 @@ export default async function NotePage({ params }: NotePageProps) {
     }
 
     throw error;
-    notFound();
   }
 
   return (
     <main className={css.main}>
-      <article className={css.article}>
-        <Link className={css.back} href="/notes/filter/all">
-          ← All notes
-        </Link>
-        <div className={css.meta}>
-          <span className={css.tag}>{note.tag}</span>
-          <time dateTime={note.createdAt}>
-            {new Date(note.createdAt).toLocaleDateString()}
-          </time>
-        </div>
-        <h1 className={css.title}>{note.title}</h1>
-        <p className={css.content}>{note.content}</p>
-      </article>
+      <NoteDetails note={note} />
     </main>
   );
 }
