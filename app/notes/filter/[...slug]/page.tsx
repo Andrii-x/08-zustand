@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { createOpenGraph } from '@/lib/utils/metadata';
+import { NOTEHUB_OG_IMAGE } from '@/lib/utils/metadata';
 import Notes from './Notes.client';
 import css from './page.module.css';
 
@@ -26,7 +26,20 @@ export async function generateMetadata({
   return {
     title,
     description,
-    openGraph: createOpenGraph(title, description, url),
+    openGraph: {
+      type: 'website',
+      title,
+      description,
+      url,
+      images: [
+        {
+          url: NOTEHUB_OG_IMAGE,
+          width: 1200,
+          height: 630,
+          alt: 'NoteHub notes application',
+        },
+      ],
+    },
   };
 }
 
