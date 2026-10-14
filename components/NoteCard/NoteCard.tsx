@@ -19,7 +19,10 @@ export default function NoteCard({ note }: NoteCardProps) {
         <Link href={`/notes/${encodeURIComponent(note.id)}`}>{note.title}</Link>
       </h2>
       <p className={css.content}>{note.content}</p>
-      <Link className={css.readMore} href={`/notes/${encodeURIComponent(note.id)}`}>
+      <Link
+        className={css.readMore}
+        href={`/notes/${encodeURIComponent(note.id)}`}
+      >
         Open note
       </Link>
     </article>

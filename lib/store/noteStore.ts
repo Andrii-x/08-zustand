@@ -26,6 +26,7 @@ export const useNoteStore = create<NoteStore>()(
       name: 'notehub-note-draft',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ draft: state.draft }),
+      skipHydration: true,
     },
   ),
 );

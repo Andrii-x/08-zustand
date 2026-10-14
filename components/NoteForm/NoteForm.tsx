@@ -8,13 +8,7 @@ import { useNoteStore } from '@/lib/store/noteStore';
 import type { NoteDraft, NoteTag } from '@/types/note';
 import css from './NoteForm.module.css';
 
-const noteTags: NoteTag[] = [
-  'Todo',
-  'Work',
-  'Personal',
-  'Meeting',
-  'Shopping',
-];
+const noteTags: NoteTag[] = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'];
 
 export default function NoteForm() {
   const router = useRouter();
@@ -26,7 +20,18 @@ export default function NoteForm() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    void useNoteStore.persist.rehydrate().then(() => setIsHydrated(true));
+    let active = true;
+
+    void (async () => {
+      await useNoteStore.persist.rehydrate();
+      if (active) {
+        setIsHydrated(true);
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   async function formAction(formData: FormData) {
