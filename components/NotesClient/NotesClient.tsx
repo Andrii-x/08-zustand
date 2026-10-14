@@ -4,18 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { useState } from 'react';
 import { fetchNotes } from '@/lib/api/notes';
-import type { NoteTag } from '@/types/note';
 import NoteCard from '@/components/NoteCard/NoteCard';
 import css from './NotesClient.module.css';
-
-const tags: Array<NoteTag | 'All'> = [
-  'All',
-  'Todo',
-  'Work',
-  'Personal',
-  'Meeting',
-  'Shopping',
-];
 
 interface NotesClientProps {
   initialTag?: string;
@@ -51,25 +41,6 @@ export default function NotesClient({ initialTag }: NotesClientProps) {
       </header>
 
       <div className={css.controls}>
-        <nav className={css.filters} aria-label="Filter notes by tag">
-          {tags.map((tag) => {
-            const href =
-              tag === 'All'
-                ? '/notes/filter/all'
-                : `/notes/filter/${encodeURIComponent(tag)}`;
-
-            return (
-              <Link
-                key={tag}
-                className={`${css.filter} ${selectedTag === tag ? css.activeFilter : ''}`}
-                href={href}
-                aria-current={selectedTag === tag ? 'page' : undefined}
-              >
-                {tag}
-              </Link>
-            );
-          })}
-        </nav>
         <label className={css.searchLabel}>
           <span className={css.srOnly}>Search notes</span>
           <input

@@ -1,0 +1,22 @@
+.layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: 24px;
+  width: min(100%, 1400px);
+  margin: 0 auto;
+}
+
+.sidebar {
+  padding: 48px 0 48px 24px;
+}
+
+@media (max-width: 760px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .sidebar {
+    padding: 20px 16px 0;
+  }
+}
