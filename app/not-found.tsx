@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { createOpenGraph } from '@/lib/utils/metadata';
+import { NOTEHUB_OG_IMAGE } from '@/lib/utils/metadata';
 import css from './not-found.module.css';
 
 const title = '404 - Page not found | NoteHub';
@@ -10,7 +10,20 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  openGraph: createOpenGraph(title, description),
+  openGraph: {
+    type: 'website',
+    title,
+    description,
+    url: 'https://notehub.com/',
+    images: [
+      {
+        url: NOTEHUB_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'NoteHub notes application',
+      },
+    ],
+  },
 };
 
 export default function NotFound() {

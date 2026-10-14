@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import NoteForm from '@/components/NoteForm/NoteForm';
-import { createOpenGraph } from '@/lib/utils/metadata';
+import { NOTEHUB_OG_IMAGE } from '@/lib/utils/metadata';
 import css from './page.module.css';
 
 const title = 'Create a note | NoteHub';
@@ -10,11 +10,20 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  openGraph: createOpenGraph(
+  openGraph: {
+    type: 'website',
     title,
     description,
-    'https://notehub.com/notes/action/create',
-  ),
+    url: 'https://notehub.com/notes/action/create',
+    images: [
+      {
+        url: NOTEHUB_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'NoteHub notes application',
+      },
+    ],
+  },
 };
 
 export default function CreateNote() {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import axios from 'axios';
 import { notFound } from 'next/navigation';
 import { fetchNoteById } from '@/lib/api/notes';
-import { createOpenGraph } from '@/lib/utils/metadata';
+import { NOTEHUB_OG_IMAGE } from '@/lib/utils/metadata';
 import NoteDetails from './NoteDetails.client';
 import css from './page.module.css';
 
@@ -24,11 +24,20 @@ export async function generateMetadata({
     return {
       title,
       description,
-      openGraph: createOpenGraph(
+      openGraph: {
+        type: 'website',
         title,
         description,
-        `https://notehub.com/notes/${encodeURIComponent(id)}`,
-      ),
+        url: `https://notehub.com/notes/${encodeURIComponent(id)}`,
+        images: [
+          {
+            url: NOTEHUB_OG_IMAGE,
+            width: 1200,
+            height: 630,
+            alt: 'NoteHub notes application',
+          },
+        ],
+      },
     };
   } catch (error) {
     if (!axios.isAxiosError(error) || error.response?.status !== 404) {
@@ -38,11 +47,20 @@ export async function generateMetadata({
     return {
       title: 'Note not found | NoteHub',
       description: 'The requested note could not be found in NoteHub.',
-      openGraph: createOpenGraph(
-        'Note not found | NoteHub',
-        'The requested note could not be found in NoteHub.',
-        `https://notehub.com/notes/${encodeURIComponent(id)}`,
-      ),
+      openGraph: {
+        type: 'website',
+        title: 'Note not found | NoteHub',
+        description: 'The requested note could not be found in NoteHub.',
+        url: `https://notehub.com/notes/${encodeURIComponent(id)}`,
+        images: [
+          {
+            url: NOTEHUB_OG_IMAGE,
+            width: 1200,
+            height: 630,
+            alt: 'NoteHub notes application',
+          },
+        ],
+      },
     };
   }
 }

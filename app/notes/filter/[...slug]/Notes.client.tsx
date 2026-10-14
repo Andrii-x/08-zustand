@@ -2,7 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
@@ -26,15 +26,25 @@ interface NotesProps {
 export default function Notes({ initialTag }: NotesProps) {
   const selectedTag = initialTag ?? 'All';
   const [search, setSearch] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedSearch(search.trim());
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [search]);
+
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['notes', { tag: selectedTag, search, page }],
+    queryKey: ['notes', { tag: selectedTag, search: debouncedSearch, page }],
     queryFn: () =>
       fetchNotes({
         page,
         perPage: 12,
         ...(selectedTag === 'All' ? {} : { tag: selectedTag }),
-        ...(search.trim() ? { search: search.trim() } : {}),
+        ...(debouncedSearch ? { search: debouncedSearch } : {}),
       }),
   });
 

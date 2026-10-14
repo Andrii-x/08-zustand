@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import Footer from '@/components/Footer/Footer';
 import Header from '@/components/Header/Header';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
-import { createOpenGraph } from '@/lib/utils/metadata';
+import { NOTEHUB_OG_IMAGE } from '@/lib/utils/metadata';
 import './globals.css';
 
 const roboto = Roboto({
@@ -21,7 +21,20 @@ const description =
 export const metadata: Metadata = {
   title,
   description,
-  openGraph: createOpenGraph(title, description),
+  openGraph: {
+    type: 'website',
+    title,
+    description,
+    url: 'https://notehub.com/',
+    images: [
+      {
+        url: NOTEHUB_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: 'NoteHub notes application',
+      },
+    ],
+  },
 };
 
 interface RootLayoutProps {
